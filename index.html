@@ -5,9 +5,9 @@
        background-color: rgb(60, 60, 60);
     }
     .drawing-app {
-        margin-left: auto;
+        /* margin-left: auto;
         margin-right: auto;
-        width: 75vw;
+        width: 75vw; */
     }
     .button {
         display: inline-block;
@@ -75,13 +75,12 @@
     // Global Variables
     //-------------------------//
 
-    console.log("here")
     // Get the canvas.
     var canvas = document.getElementById('myCanvas');
 
     // Set the canvas to fill the screen.
-    canvas.width = window.outerWidth * .75;
-    canvas.height = window.outerHeight * .75;
+    canvas.width = window.outerWidth;
+    canvas.height = window.outerHeight - 300;
 
     // Get a 2d drawing context.
     var ctx = canvas.getContext('2d');

@@ -1,19 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Daddy Draw">
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> -->
 
+    <meta name="theme-color" content="#3c3c3c">
+    <meta name="Description" content="Multi touch drawing app">
+    <meta property="og:title" content="Daddy Draw" />
+    <!-- <meta property="og:image" content="./android-chrome-512x512.png" /> -->
+  </head>
 <style>
     body, html {
        margin: 0;
-       background-color: rgb(60, 60, 60);
+       background-color: #3c3c3c;
     }
     .drawing-app {
-        /* margin-left: auto;
-        margin-right: auto;
-        width: 75vw; */
+        position: relative;
     }
     .button {
         display: inline-block;
         margin-left: 9%;
         margin-top: 10px;
         margin-bottom: 5px;
+    }
+    .button-group {
+        position: absolute;
+        display: grid;
+        margin-top: 2em;
     }
     .red {
         background-color: red;
@@ -37,8 +54,8 @@
         background-color: green;
     }
     .circle {
-        width: 42px;
-        height: 42px;
+        width: 2.25em;
+        height: 2.25em;
         border-radius: 50%;
     }
     .canvas {
@@ -47,11 +64,11 @@
         background-color: black;
     }
     .selected {
-        width: 16px;
-        height: 16px;
+        width: 1em;
+        height: 1em;
         position: relative;
-        top: 13px;
-        left: 13px;
+        top: 0.6em;
+        left: 0.6em;
         border-radius: 50%;
         background-color: black;
     }
@@ -66,7 +83,7 @@
         <div data-color="yellow" class="yellow button circle"></div>
         <div data-color="white" class="white button circle"></div>
     </div>
-    <canvas class="canvas" id="myCanvas" width="1000" height="1000"></canvas>
+    <canvas class="canvas" id="myCanvas" width="500" height="500"></canvas>
 </div>
 <script>
 (function(){
@@ -80,7 +97,7 @@
 
     // Set the canvas to fill the screen.
     canvas.width = window.outerWidth;
-    canvas.height = window.outerHeight - 300;
+    canvas.height = window.outerHeight;
 
     // Get a 2d drawing context.
     var ctx = canvas.getContext('2d');
@@ -300,3 +317,4 @@
 
 })()
 </script>
+</html>

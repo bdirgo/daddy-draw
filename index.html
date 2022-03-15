@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,57 +13,71 @@
     <meta name="Description" content="Multi touch drawing app">
     <meta property="og:title" content="Daddy Draw" />
     <!-- <meta property="og:image" content="./android-chrome-512x512.png" /> -->
-  </head>
+</head>
 <style>
-    body, html {
-       margin: 0;
-       background-color: #3c3c3c;
+    body,
+    html {
+        margin: 0;
+        background-color: #3c3c3c;
     }
+
     .drawing-app {
         position: relative;
     }
+
     .button {
         display: inline-block;
         margin-left: 9%;
         margin-top: 10px;
         margin-bottom: 5px;
     }
+
     .button-group {
         position: absolute;
         display: grid;
         margin-top: 2em;
     }
+
     .red {
         background-color: red;
     }
+
     .blue {
         background-color: blue;
     }
+
     .yellow {
         background-color: yellow;
     }
+
     .orange {
         background-color: orange;
     }
+
     .pink {
         background-color: pink;
     }
+
     .white {
         background-color: white;
     }
+
     .green {
         background-color: green;
     }
+
     .circle {
         width: 2.25em;
         height: 2.25em;
         border-radius: 50%;
     }
+
     .canvas {
         border: 1px solid black;
         border-radius: 25px;
         background-color: black;
     }
+
     .selected {
         width: 1em;
         height: 1em;
@@ -86,235 +101,330 @@
     <canvas class="canvas" id="myCanvas" width="500" height="500"></canvas>
 </div>
 <script>
-(function(){
-    //-------------------------//
-    // Initialization and 
-    // Global Variables
-    //-------------------------//
+    (function () {
+        //-------------------------//
+        // Initialization and 
+        // Global Variables
+        //-------------------------//
 
-    // Get the canvas.
-    var canvas = document.getElementById('myCanvas');
+        // Get the canvas.
+        var canvas = document.getElementById('myCanvas');
 
-    // Set the canvas to fill the screen.
-    canvas.width = window.outerWidth;
-    canvas.height = window.outerHeight - 50;
+        // Set the canvas to fill the screen.
+        canvas.width = window.outerWidth;
+        canvas.height = window.outerHeight - 50;
 
-    // Get a 2d drawing context.
-    var ctx = canvas.getContext('2d');
+        // Get a 2d drawing context.
+        var ctx = canvas.getContext('2d');
 
-    // Used to keep track of active touches.
-    var currentTouches = new Array;
+        // Used to keep track of active touches.
+        var currentTouches = new Array;
 
-    // Define selected color
-    var colors = ['red', 'blue', 'green', 'pink', 'orange', 'yellow', 'white'];
-    var selectedColor = colors[0];
+        // Define selected color
+        var colors = ['red', 'blue', 'green', 'pink', 'orange', 'yellow', 'white'];
+        var selectedColor = colors[0];
 
-    //-------------------------//
-    // Helper Methods
-    //-------------------------//
+        //-------------------------//
+        // Helper Methods
+        //-------------------------//
 
-    var removeCurrentSelection = function () {
-        var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
-        if (selectedColorButton.firstChild) {
-            selectedColorButton.removeChild(selectedColorButton.firstChild);
-        }
-    }
-
-    var selectColorButton = function (color = 'red') {
-        removeCurrentSelection();
-        selectedColor = color;
-        var selectedDiv = document.createElement('div');
-        selectedDiv.classList = 'selected';
-        var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
-        selectedColorButton.appendChild(selectedDiv);
-    }
-
-    // Returns a random color from an array.
-    var randomColor = function () {
-        var colors = ['#3F3F3F', '#929292', '#00A3EE', '#F5D908', '#D80351'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    };
-
-
-    // Finds the array index of a touch in the currentTouches array.
-    var findCurrentTouchIndex = function (id) {
-        for (var i=0; i < currentTouches.length; i++) {
-            if (currentTouches[i].id === id) {
-                return i;
+        var removeCurrentSelection = function () {
+            var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
+            if (selectedColorButton.firstChild) {
+                selectedColorButton.removeChild(selectedColorButton.firstChild);
             }
         }
 
-        // Touch not found! Return -1.
-        return -1;
-    };
-
-
-    //-------------------------//
-    // Handler Methods
-    //-------------------------//
-
-    var clickColorButton = function (event) {
-        var button = event.target;
-        var buttonColor = button.dataset.color;
-        if (buttonColor == undefined) {
-            button = event.target.parentElement;
+        var selectColorButton = function (color = 'red') {
+            removeCurrentSelection();
+            selectedColor = color;
+            var selectedDiv = document.createElement('div');
+            selectedDiv.classList = 'selected';
+            var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
+            selectedColorButton.appendChild(selectedDiv);
         }
-        buttonColor = button.dataset.color;
-        console.log(button.dataset.color);
-        selectColorButton(`${buttonColor}`);
-    }
 
-    // Creates a new touch in the currentTouches array and draws the starting
-    // point on the canvas.
-    var touchStarted = function (event) {
-        var touches = event.changedTouches;
+        // Returns a random color from an array.
+        var randomColor = function () {
+            var colors = ['#3F3F3F', '#929292', '#00A3EE', '#F5D908', '#D80351'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        };
 
-        for (var i=0; i < touches.length; i++) {
-            var touch = touches[i];
-            var touchColor = selectedColor;
 
-            currentTouches.push({
-                id: touch.identifier,
-                pageX: touch.pageX,
-                pageY: touch.pageY,
-                color: touchColor
-            });
+        // Finds the array index of a touch in the currentTouches array.
+        var findCurrentTouchIndex = function (id) {
+            for (var i = 0; i < currentTouches.length; i++) {
+                if (currentTouches[i].id === id) {
+                    return i;
+                }
+            }
 
+            // Touch not found! Return -1.
+            return -1;
+        };
+
+
+        //-------------------------//
+        // Handler Methods
+        //-------------------------//
+
+        var clickColorButton = function (event) {
+            var button = event.target;
+            var buttonColor = button.dataset.color;
+            if (buttonColor == undefined) {
+                button = event.target.parentElement;
+            }
+            buttonColor = button.dataset.color;
+            console.log(button.dataset.color);
+            selectColorButton(`${buttonColor}`);
+        }
+
+        // Creates a new touch in the currentTouches array and draws the starting
+        // point on the canvas.
+        var touchStarted = function (event) {
+            var touches = event.changedTouches;
+
+            for (var i = 0; i < touches.length; i++) {
+                var touch = touches[i];
+                var touchColor = selectedColor;
+
+                currentTouches.push({
+                    id: touch.identifier,
+                    pageX: touch.pageX,
+                    pageY: touch.pageY,
+                    color: touchColor
+                });
+
+                ctx.beginPath();
+                ctx.arc(touch.pageX, touch.pageY, 2.5, Math.PI * 2, false);
+                ctx.fillStyle = touchColor;
+                ctx.fill();
+            }
+
+        };
+
+
+        // Draws a line on the canvas between the previous touch location and
+        // the new location.
+        var touchMoved = function (event) {
+            var touches = event.changedTouches;
+
+            for (var i = 0; i < touches.length; i++) {
+                var touch = touches[i];
+                var currentTouchIndex = findCurrentTouchIndex(touch.identifier);
+
+                if (currentTouchIndex >= 0) {
+                    var currentTouch = currentTouches[currentTouchIndex];
+
+                    ctx.beginPath();
+                    ctx.moveTo(currentTouch.pageX, currentTouch.pageY);
+                    ctx.lineTo(touch.pageX, touch.pageY);
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = currentTouch.color;
+                    ctx.stroke();
+
+                    // Update the touch record.
+                    currentTouch.pageX = touch.pageX;
+                    currentTouch.pageY = touch.pageY;
+
+                    // Store the record.
+                    currentTouches.splice(currentTouchIndex, 1, currentTouch);
+                } else {
+                    console.log('Touch was not found!');
+                }
+
+            }
+
+        };
+
+
+        // Draws a line to the final touch position on the canvas and then
+        // removes the touh from the currentTouches array.
+        var touchEnded = function (event) {
+            var touches = event.changedTouches;
+
+            for (var i = 0; i < touches.length; i++) {
+                var touch = touches[i];
+                var currentTouchIndex = findCurrentTouchIndex(touch.identifier);
+
+                if (currentTouchIndex >= 0) {
+                    var currentTouch = currentTouches[currentTouchIndex];
+
+                    ctx.beginPath();
+                    ctx.moveTo(currentTouch.pageX, currentTouch.pageY);
+                    ctx.lineTo(touch.pageX, touch.pageY);
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = currentTouch.color;
+                    ctx.stroke();
+
+                    // Remove the record.
+                    currentTouches.splice(currentTouchIndex, 1);
+                } else {
+                    console.log('Touch was not found!');
+                }
+
+            }
+
+        };
+
+
+        // Removes cancelled touches from the currentTouches array.
+        var touchCancelled = function (event) {
+            var touches = event.changedTouches;
+
+            for (var i = 0; i < touches.length; i++) {
+                var currentTouchIndex = findCurrentTouchIndex(touches[i].identifier);
+
+                if (currentTouchIndex >= 0) {
+                    // Remove the touch record.
+                    currentTouches.splice(currentTouchIndex, 1);
+                } else {
+                    console.log('Touch was not found!');
+                }
+            }
+        };
+
+        //-------------------------//
+        // Event Listeners
+        //-------------------------//
+
+
+        // Set up an event listener for new touches.
+        canvas.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            touchStarted(event);
+        });
+
+
+        // Set up an event listener for when a touch ends.
+        canvas.addEventListener('touchend', function (e) {
+            e.preventDefault();
+            touchEnded(e);
+        });
+
+
+        // Set up an event listener for when a touch leaves the canvas.
+        canvas.addEventListener('touchleave', function (e) {
+            e.preventDefault();
+            touchEnded(e);
+        });
+
+
+        // Set up an event listener for when the touch instrument is moved.
+        canvas.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+            touchMoved(e);
+        });
+
+
+        // Set up an event listener to catch cancelled touches.
+        canvas.addEventListener('touchcancel', function (e) {
+            touchCancelled(e);
+        });
+
+        const buttons = document.querySelectorAll('.button');
+        for (let index = 0; index < buttons.length; index++) {
+            const button = buttons[index];
+            button.addEventListener('click', clickColorButton);
+        }
+        selectColorButton(selectedColor);
+
+
+        //-------------------------//
+        // Mouse Support - from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Using_Pointer_Events
+        //-------------------------//
+
+
+        canvas.addEventListener("mousedown", handleStart, false);
+        canvas.addEventListener("mouseup", handleEnd, false);
+        canvas.addEventListener("mousecancel", handleCancel, false);
+        canvas.addEventListener("mousemove", handleMove, false);
+        var ongoingTouches = new Array();
+
+        function handleStart(evt) {
+            // console.log("pointerdown.");
+            var el = document.getElementsByTagName("canvas")[0];
+            var ctx = el.getContext("2d");
+
+            // console.log("pointerdown: id = " + evt.pointerId);
+            ongoingTouches.push(copyTouch(evt));
+            var color = colorForTouch(evt);
             ctx.beginPath();
-            ctx.arc(touch.pageX, touch.pageY, 2.5, Math.PI*2, false);
-            ctx.fillStyle = touchColor;
+            // ctx.arc(ongoingTouches[i].pageX, ongoingTouches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+            // ctx.arc(evt.clientX, evt.clientY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+            ctx.fillStyle = color;
             ctx.fill();
         }
 
-    };
+        function handleMove(evt) {
+            var el = document.getElementsByTagName("canvas")[0];
+            var ctx = el.getContext("2d");
+            var color = colorForTouch(evt);
+            var idx = ongoingTouchIndexById(evt.pointerId);
 
-
-    // Draws a line on the canvas between the previous touch location and
-    // the new location.
-    var touchMoved = function (event) {
-        var touches = event.changedTouches;
-
-        for (var i=0; i < touches.length; i++) {
-            var touch = touches[i];
-            var currentTouchIndex = findCurrentTouchIndex(touch.identifier);
-
-            if (currentTouchIndex >= 0) {
-                var currentTouch = currentTouches[currentTouchIndex];
-
+            // console.log("continuing touch: idx =  " + idx);
+            if (idx >= 0) {
                 ctx.beginPath();
-                ctx.moveTo(currentTouch.pageX, currentTouch.pageY);
-                ctx.lineTo(touch.pageX, touch.pageY);
+                // console.log("ctx.moveTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
+                ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+                // console.log("ctx.lineTo(" + evt.clientX + ", " + evt.clientY + ");");
+                ctx.lineTo(evt.clientX, evt.clientY);
                 ctx.lineWidth = 4;
-                ctx.strokeStyle = currentTouch.color;
+                ctx.strokeStyle = color;
                 ctx.stroke();
 
-                // Update the touch record.
-                currentTouch.pageX = touch.pageX;
-                currentTouch.pageY = touch.pageY;
-
-                // Store the record.
-                currentTouches.splice(currentTouchIndex, 1, currentTouch);
+                ongoingTouches.splice(idx, 1, copyTouch(evt));  // swap in the new touch record
+                // console.log(".");
             } else {
-                console.log('Touch was not found!');
+                // console.log("can't figure out which touch to continue: idx = " + idx);
             }
-
         }
 
-    };
+        function handleEnd(evt) {
+            // console.log("pointerup");
+            var el = document.getElementsByTagName("canvas")[0];
+            var ctx = el.getContext("2d");
+            var color = colorForTouch(evt);
+            var idx = ongoingTouchIndexById(evt.pointerId);
 
-
-    // Draws a line to the final touch position on the canvas and then
-    // removes the touh from the currentTouches array.
-    var touchEnded = function (event) {
-        var touches = event.changedTouches;
-
-        for (var i=0; i < touches.length; i++) {
-            var touch = touches[i];
-            var currentTouchIndex = findCurrentTouchIndex(touch.identifier);
-
-            if (currentTouchIndex >= 0) {
-                var currentTouch = currentTouches[currentTouchIndex];
-
-                ctx.beginPath();
-                ctx.moveTo(currentTouch.pageX, currentTouch.pageY);
-                ctx.lineTo(touch.pageX, touch.pageY);
+            if (idx >= 0) {
                 ctx.lineWidth = 4;
-                ctx.strokeStyle = currentTouch.color;
-                ctx.stroke();
-
-                // Remove the record.
-                currentTouches.splice(currentTouchIndex, 1);
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+                ctx.lineTo(evt.clientX, evt.clientY);
+                // ctx.fillRect(evt.clientX - 4, evt.clientY - 4, 8, 8);  // and a square at the end
+                ongoingTouches.splice(idx, 1);  // remove it; we're done
             } else {
-                console.log('Touch was not found!');
-            }
-
-        }
-
-    };
-
-
-    // Removes cancelled touches from the currentTouches array.
-    var touchCancelled = function (event) {
-        var touches = event.changedTouches;
-
-        for (var i=0; i < touches.length; i++) {
-            var currentTouchIndex = findCurrentTouchIndex(touches[i].identifier);
-
-            if (currentTouchIndex >= 0) {
-                // Remove the touch record.
-                currentTouches.splice(currentTouchIndex, 1);
-            } else {
-                console.log('Touch was not found!');
+                // console.log("can't figure out which touch to end");
             }
         }
-    };
 
+        function handleCancel(evt) {
+            // console.log("pointercancel: id = " + evt.pointerId);
+            var idx = ongoingTouchIndexById(evt.pointerId);
+            ongoingTouches.splice(idx, 1);  // remove it; we're done
+        }
 
-    //-------------------------//
-    // Event Listeners
-    //-------------------------//
+        function colorForTouch(touch) {
+            return selectedColor;
+        }
 
+        function copyTouch(touch) {
+            return { identifier: touch.pointerId, pageX: touch.clientX, pageY: touch.clientY };
+        }
 
-    // Set up an event listener for new touches.
-    canvas.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        touchStarted(event);
-    });
+        function ongoingTouchIndexById(idToFind) {
+            for (var i = 0; i < ongoingTouches.length; i++) {
+                var id = ongoingTouches[i].identifier;
 
-
-    // Set up an event listener for when a touch ends.
-    canvas.addEventListener('touchend', function(e) {
-        e.preventDefault();
-        touchEnded(e);
-    });
-
-
-    // Set up an event listener for when a touch leaves the canvas.
-    canvas.addEventListener('touchleave', function(e) {
-        e.preventDefault();
-        touchEnded(e);
-    });
-
-
-    // Set up an event listener for when the touch instrument is moved.
-    canvas.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        touchMoved(e);
-    });
-
-
-    // Set up an event listener to catch cancelled touches.
-    canvas.addEventListener('touchcancel', function(e) {
-        touchCancelled(e);
-    });
-
-    const buttons = document.querySelectorAll('.button');
-    for (let index = 0; index < buttons.length; index++) {
-        const button = buttons[index];
-        button.addEventListener('click', clickColorButton);
-    }
-    selectColorButton(selectedColor);
-
-})()
+                if (id == idToFind) {
+                    return i;
+                }
+            }
+            return -1;    // not found
+        }
+    })()
 </script>
+
 </html>

@@ -129,7 +129,7 @@
         //-------------------------//
 
         var removeCurrentSelection = function () {
-            var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
+            var selectedColorButton = document.querySelector('.' + selectedColor + '.button');
             if (selectedColorButton.firstChild) {
                 selectedColorButton.removeChild(selectedColorButton.firstChild);
             }
@@ -140,7 +140,7 @@
             selectedColor = color;
             var selectedDiv = document.createElement('div');
             selectedDiv.classList = 'selected';
-            var selectedColorButton = document.querySelector(`.${selectedColor}.button`);
+            var selectedColorButton = document.querySelector('.' + selectedColor + '.button');
             selectedColorButton.appendChild(selectedDiv);
         }
 
@@ -176,7 +176,7 @@
             }
             buttonColor = button.dataset.color;
             console.log(button.dataset.color);
-            selectColorButton(`${buttonColor}`);
+            selectColorButton(buttonColor + '');
         }
 
         // Creates a new touch in the currentTouches array and draws the starting

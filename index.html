@@ -323,7 +323,7 @@
         });
 
         const buttons = document.querySelectorAll('.button');
-        for (let index = 0; index < buttons.length; index++) {
+        for (var index = 0; index < buttons.length; index++) {
             const button = buttons[index];
             button.addEventListener('click', clickColorButton);
         }

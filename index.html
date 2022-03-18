@@ -170,12 +170,12 @@
 
         var clickColorButton = function (event) {
             var button = event.target;
-            var buttonColor = button.dataset.color;
+            var buttonColor = button.getAttribute('data-color');
+            
             if (buttonColor == undefined) {
                 button = event.target.parentElement;
             }
-            buttonColor = button.dataset.color;
-            console.log(button.dataset.color);
+            buttonColor = button.getAttribute('data-color');
             selectColorButton(buttonColor + '');
         }
 

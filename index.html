@@ -13,81 +13,81 @@
     <meta name="Description" content="Multi touch drawing app">
     <meta property="og:title" content="Daddy Draw" />
     <!-- <meta property="og:image" content="./android-chrome-512x512.png" /> -->
+    <style>
+        body,
+        html {
+            margin: 0;
+            background-color: #3c3c3c;
+        }
+
+        .drawing-app {
+            position: relative;
+        }
+
+        .button {
+            display: inline-block;
+            margin-left: 9%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .button-group {
+            position: absolute;
+            display: grid;
+            margin-top: 2em;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .orange {
+            background-color: orange;
+        }
+
+        .pink {
+            background-color: pink;
+        }
+
+        .white {
+            background-color: white;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .circle {
+            width: 2.25em;
+            height: 2.25em;
+            border-radius: 50%;
+        }
+
+        .canvas {
+            border: 1px solid black;
+            border-radius: 25px;
+            background-color: black;
+        }
+
+        .selected {
+            width: 1em;
+            height: 1em;
+            position: relative;
+            top: 0.6em;
+            left: 0.6em;
+            border-radius: 50%;
+            background-color: black;
+        }
+    </style>
 </head>
-<style>
-    body,
-    html {
-        margin: 0;
-        background-color: #3c3c3c;
-    }
-
-    .drawing-app {
-        position: relative;
-    }
-
-    .button {
-        display: inline-block;
-        margin-left: 9%;
-        margin-top: 10px;
-        margin-bottom: 5px;
-    }
-
-    .button-group {
-        position: absolute;
-        display: grid;
-        margin-top: 2em;
-    }
-
-    .red {
-        background-color: red;
-    }
-
-    .blue {
-        background-color: blue;
-    }
-
-    .yellow {
-        background-color: yellow;
-    }
-
-    .orange {
-        background-color: orange;
-    }
-
-    .pink {
-        background-color: pink;
-    }
-
-    .white {
-        background-color: white;
-    }
-
-    .green {
-        background-color: green;
-    }
-
-    .circle {
-        width: 2.25em;
-        height: 2.25em;
-        border-radius: 50%;
-    }
-
-    .canvas {
-        border: 1px solid black;
-        border-radius: 25px;
-        background-color: black;
-    }
-
-    .selected {
-        width: 1em;
-        height: 1em;
-        position: relative;
-        top: 0.6em;
-        left: 0.6em;
-        border-radius: 50%;
-        background-color: black;
-    }
-</style>
 <div class="drawing-app">
     <div class="button-group">
         <div data-color="red" class="red button circle"></div>
